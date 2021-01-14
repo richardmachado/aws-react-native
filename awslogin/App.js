@@ -1,10 +1,13 @@
 import React from 'react';
-import { LogBox, Text, View, StyleSheet } from 'react-native';
-import Amplify from 'aws-amplify';
+import { LogBox, Text, View, StyleSheet, Button } from 'react-native';
+import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports'
-import { Authenticator, SignIn, ConfirmSignUp, ConfirmSignIn, ForgotPassword } from 'aws-amplify-react-native';
+import { Authenticator, ConfirmSignIn } from 'aws-amplify-react-native';
 
-import SignUp from './SignUp'
+import SignIn from './components/SignIn'
+import SignUp from './components/SignUp';
+import ConfirmSignUp from './components/ConfirmSignUp';
+import ForgotPassword from './components/ForgotPassword';
 
 
 LogBox.ignoreAllLogs()
@@ -13,7 +16,14 @@ Amplify.configure(awsconfig)
 
 
 function Home(props) {
-  if (props.authState === 'signedIn') return <Text>Welcome</Text>;
+  if (props.authState === 'signedIn') return (
+    <View>
+      <Text>
+        Welcome
+      </Text>
+      <Button title="Sign Out" onPress={()=> Auth.signOut()} />
+    </View>
+  );
   else return <Text></Text>
 }
 export default function App() {
