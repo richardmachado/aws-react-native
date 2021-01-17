@@ -1,43 +1,51 @@
-import React, {useState} from 'react'
-import { View, Text, Button, TextInput, TouchableOpacity, TouchableWithoutFeedback , Alert } from 'react-native'
-import{ Auth } from 'aws-amplify';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Button,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Alert,
+} from 'react-native';
+import {Auth} from 'aws-amplify';
 
-import { validateEmail } from '../Validation';
+import {validateEmail} from '../Validation';
 
-import {FormStyles} from "./styles/FormStyles"
-
+import {FormStyles} from './styles/FormStyles';
 
 export default function ForgotPassword(props) {
   const [state, setState] = useState({
-    email: ''
+    email: '',
   });
 
-  const [error, setErrors] = useState({ email: ''})
-  
+  const [error, setErrors] = useState({email: ''});
+
   async function onSubmit() {
     const emailError = validateEmail(state.email);
-   
-    if (emailError)
-      setErrors({ email: emailError });
+
+    if (emailError) setErrors({email: emailError});
     else {
       try {
         const user = await Auth.forgotPassword({
-          username: state.email
+          username: state.email,
         });
-        props.onStateChange('changePassword', {})
+        props.onStateChange('ChangePassword', {});
       } catch (error) {
         Alert.alert(error.message);
       }
     }
   }
-  if(props.authState === 'forgotPassword')
+  if (props.authState === 'forgotPassword')
     return (
       <View style={FormStyles.container}>
         <Text style={FormStyles.title}>Forgot Password</Text>
         <Text style={FormStyles.label}>Email</Text>
         <TextInput
           style={FormStyles.input}
-          onChangeText={(text) => setState({...state, email: text.toLowerCase()})}
+          onChangeText={(text) =>
+            setState({...state, email: text.toLowerCase()})
+          }
           value={state.email}
           placeholder="Enter email"
         />
@@ -64,6 +72,5 @@ export default function ForgotPassword(props) {
         </View>
       </View>
     );
-    else return <></>
+  else return <></>;
 }
-

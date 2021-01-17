@@ -8,6 +8,7 @@ import SignIn from './components/SignIn'
 import SignUp from './components/SignUp';
 import ConfirmSignUp from './components/ConfirmSignUp';
 import ForgotPassword from './components/ForgotPassword';
+import ChangePassword from './components/ChangePassword'
 
 
 LogBox.ignoreAllLogs()
@@ -32,13 +33,15 @@ export default function App() {
     <View style={styles.container}>
       <Authenticator usernameAttributes="email"
         authState="signIn"
-        hideDefault={true} onStateChange={(authState) => console.log('authSTATE ...', authState)}>
-        <Home />
-        <SignUp />
-        <SignIn />
-        <ConfirmSignUp />
-        <ConfirmSignIn />
-        <ForgotPassword />
+        hideDefault={true}
+         onStateChange={(authState)=> console.log('authSTATE ...', authState)}>
+          <Home />
+          <SignUp />
+          <SignIn />
+          <ConfirmSignUp />
+          <ConfirmSignIn />
+          <ForgotPassword />
+          <ChangePassword />
         </Authenticator>
     </View>
   )
