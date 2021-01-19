@@ -1,52 +1,109 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import {StyleSheet} from 'react-native';
+import {Dimensions} from 'react-native';
 
-const windowWidth = Dimensions.get('window').width;
+const fullWidth = Dimensions.get('window').width; //full width
+
+export const deepSquidInk = '#152939';
+export const linkUnderlayColor = '#FFF';
+export const errorIconColor = '#30d0fe';
 
 export const FormStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    height: '100%',
+    alignItems: 'center',
     justifyContent: 'center',
-    width: windowWidth,
+    width: fullWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.40)',
+  },
+  bgcontainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     padding: 20,
   },
+  textbox: {
+    backgroundColor: 'white',
+    borderColor: 'grey',
+    borderWidth: 0.5,
+    padding: 5,
+    paddingHorizontal: 10,
+    fontSize: 13,
+    color: 'black',
+    height: 50,
+    width: 350,
+    borderRadius: 8,
+  },
   button: {
-    backgroundColor: 'lightseagreen',
-    height: 40,
-    borderRadius: 5,
+    backgroundColor: 'royalblue',
+    height: 50,
+    width: 350,
+    alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 10,
+    borderRadius: 8,
   },
   buttonText: {
-    textTransform: 'uppercase',
     color: 'white',
-    textAlign: 'center',
+    //fontFamily: 'Palatino-Bold',
+    fontSize: 24,
+    fontWeight: '600',
+    textTransform: 'uppercase',
   },
-  input: {
-    height: 40,
-    borderColor: 'lightgray',
+  errorTextbox: {
+    borderColor: 'red',
     borderWidth: 1,
-    width: windowWidth - 60,
-    borderRadius: 5,
-    marginBottom: 5,
-    padding: 10,
   },
-  links: {
+  labelWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 5,
+    width: 350,
+  },
+  labelText: {
+    color: 'black',
+    fontSize: 13,
+    textTransform: 'uppercase',
+  },
+  labelIcon: {
+    color: 'black',
+    marginRight: 5,
   },
   title: {
     textAlign: 'center',
-    fontSize: 18,
+    marginBottom: 10,
+    //fontFamily: 'Palatino-Bold',
+    fontSize: 20,
     textTransform: 'uppercase',
-    fontWeight: '600',
-  },
-  label: {
-    marginLeft: 5,
-    marginBottom: 5,
   },
   error: {
     color: 'red',
-    paddingBottom: 10,
-    marginLeft: 5,
+    fontWeight: '600',
+    fontSize: 12,
+  },
+  errorIcon: {color: 'white', alignItems: 'center', paddingRight: 5},
+  formError: {
+    padding: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'firebrick',
+  },
+  inputError: {
+    color: 'firebrick',
+  },
+  errorMsg: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  formLinks: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  linkText: {
+    color: 'black',
+    fontSize: 12,
+    //fontFamily: 'Palatino-BoldItalic',
+    textShadowColor: 'white',
+    textShadowRadius: 6,
+    textTransform: 'uppercase',
   },
 });

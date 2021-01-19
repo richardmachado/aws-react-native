@@ -1,76 +1,78 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
-  Button,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Alert,
 } from 'react-native';
 import {Auth} from 'aws-amplify';
-
-import {validateEmail} from '../Validation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {FormStyles} from './styles/FormStyles';
 
+import useForm from './useForm';
+import {validateEmail} from '../Validation';
+
 export default function ForgotPassword(props) {
-  const [state, setState] = useState({
-    email: '',
-  });
+  const initialValues = {email: ''};
 
-  const [error, setErrors] = useState({email: ''});
+  const {values, onSubmit, onChange, errors} = useForm(
+    forgotPassword,
+    initialValues,
+    validateSignup,
+  );
+  const [error, setError] = React.useState();
 
-  async function onSubmit() {
-    const emailError = validateEmail(state.email);
-
-    if (emailError) setErrors({email: emailError});
-    else {
-      try {
-        const user = await Auth.forgotPassword({
-          username: state.email,
-        });
-        props.onStateChange('ChangePassword', {});
-      } catch (error) {
-        Alert.alert(error.message);
-      }
+  async function forgotPassword() {
+    let username = values.email;
+    try {
+      await Auth.forgotPassword(username);
+      props.onStateChange('changePassword', {});
+      setError({});
+    } catch (err) {
+      setError('User does not exist');
     }
   }
-  if (props.authState === 'forgotPassword')
-    return (
-      <View style={FormStyles.container}>
+
+  function validateSignup() {
+    const errors = {};
+    errors.email = validateEmail(values.email);
+    return errors;
+  }
+
+  return (
+    <View style={FormStyles.container}>
+      <View style={FormStyles.bgcontainer}>
         <Text style={FormStyles.title}>Forgot Password</Text>
-        <Text style={FormStyles.label}>Email</Text>
-        <TextInput
-          style={FormStyles.input}
-          onChangeText={(text) =>
-            setState({...state, email: text.toLowerCase()})
-          }
-          value={state.email}
-          placeholder="Enter email"
-        />
-        <Text style={FormStyles.error}>{error.email}</Text>
-
-        <Text style={FormStyles.error}>{error.password}</Text>
-        <TouchableOpacity style={FormStyles.button} onPress={() => onSubmit()}>
-          <Text style={FormStyles.buttonText}>Retrieve Password</Text>
-        </TouchableOpacity>
-
-        <View style={FormStyles.links}>
-          <Button
-            onPress={() => props.onStateChange('signIn', {})}
-            title="Back to Sign In"
-            color="black"
-            accessibilityLabel="back to signIn"
-          />
-          <Button
-            onPress={() => props.onStateChange('changePassword', {})}
-            title="Change Password"
-            color="black"
-            accessibilityLabel="Change Password "
-          />
+        <View style={FormStyles.labelWrapper}>
+          <Icon name="email" size={13} style={FormStyles.labelIcon} />
+          <Text style={FormStyles.labelText}> Email </Text>
         </View>
+        <TextInput
+          style={FormStyles.textbox}
+          autoCompleteType="email"
+          onChangeText={(text) => onChange({name: 'email', value: text})}
+          value={values.email}
+          placeholder="Enter Email"
+        />
+        {errors.email && <Text style={FormStyles.error}>{errors.email}</Text>}
+        <TouchableOpacity style={FormStyles.button} onPress={onSubmit}>
+          <Text style={FormStyles.buttonText}>Send</Text>
+        </TouchableOpacity>
+        <View style={FormStyles.formLinks}>
+          <TouchableWithoutFeedback
+            onPress={() => props.onStateChange('signIn', {})}>
+            <Text style={FormStyles.linkText}>Back to Sign In</Text>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => props.onStateChange('changePassword', {})}>
+            <Text style={FormStyles.linkText}>Change Password</Text>
+          </TouchableWithoutFeedback>
+        </View>
+        {error && <Text style={FormStyles.error}>{error}</Text>}
+        {/* {error && <ErrorMessage error={error} setError={setError} />} */}
       </View>
-    );
-  else return <></>;
+    </View>
+  );
 }

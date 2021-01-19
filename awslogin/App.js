@@ -17,7 +17,7 @@ Amplify.configure(awsconfig)
 
 
 function Home(props) {
-  if (props.authState === 'signedIn') return (
+  return (
     <View>
       <Text>
         Welcome
@@ -25,23 +25,36 @@ function Home(props) {
       <Button title="Sign Out" onPress={()=> Auth.signOut()} />
     </View>
   );
-  else return <Text></Text>
 }
-export default function App() {
+
+const AuthScreens = (props) => {
+  console.log('props',props.authState);
+  switch (props.authState) {
+    case 'signIn':
+      return <SignIn {...props} />;
+    case 'signUp':
+      return <SignUp {...props} />;
+    case 'forgotPassword':
+      return <ForgotPassword {...props} />;
+    case 'confirmSignUp':
+      return <ConfirmSignUp {...props} />;
+    case 'changePassword':
+      return <ChangePassword {...props} />;
+    case 'signedIn':
+      return <Home {...props} />;
+  }
+};
+
+const App = () => {
 
   return (
     <View style={styles.container}>
-      <Authenticator usernameAttributes="email"
+      <Authenticator
+        usernameAttributes="email"
         authState="signIn"
         hideDefault={true}
-         onStateChange={(authState)=> console.log('authSTATE ...', authState)}>
-          <Home />
-          <SignUp />
-          <SignIn />
-          <ConfirmSignUp />
-          <ConfirmSignIn />
-          <ForgotPassword />
-          <ChangePassword />
+      >
+        <AuthScreens />
         </Authenticator>
     </View>
   )
@@ -55,3 +68,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
+
+export default App
